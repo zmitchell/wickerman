@@ -140,8 +140,8 @@ fn random_error_message(name: &str) -> String {
     let dr_bees_msg = String::from("🐝 This field is woefully underpopulated by BEES 🐝");
     let bike_msg = String::from("🚴‍♀️ STEP AWAY FROM THE BIKE 🚴‍♀️");
     let guilty_msg = String::from("You'll all be guilty! And you're doing it for nothing!");
-    // Store the messages in a `Vec<String>` so that a message may be chosen at random.
-    let messages = vec![
+    // Store the messages in an array so that a message may be chosen at random.
+    let messages = [
         truck_msg,
         city_msg,
         bear_msg,
@@ -152,8 +152,6 @@ fn random_error_message(name: &str) -> String {
         bike_msg,
         guilty_msg,
     ];
-    // Use the `rand` crate to generate an index in the proper range.
-    let index = rand::thread_rng().gen_range(0, messages.len());
-    // Return a copy of the error message.
-    messages[index].clone()
+    // Use the `rand` crate to choose a random message to return.
+    rand::thread_rng().choose(&messages).unwrap().to_owned()
 }
