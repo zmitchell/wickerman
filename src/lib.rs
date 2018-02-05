@@ -127,7 +127,7 @@ fn random_error_message(name: &str) -> String {
     if name == "" {
         city_msg = String::from("Is that some kind of city talk?");
     } else {
-        city_msg = format!("{}? Is that some kind of city talk?", name.clone());
+        city_msg = format!("{}? Is that some kind of city talk?", name);
     }
     let bear_msg = [
         "🐻".repeat(7).as_str(),
