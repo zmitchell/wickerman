@@ -7,7 +7,7 @@ extern crate quote;
 extern crate syn;
 
 use proc_macro::TokenStream;
-use syn::Item;
+use syn::{Fields, Item};
 use syn::spanned::Spanned;
 
 #[proc_macro_attribute]
@@ -52,7 +52,29 @@ pub fn wickerman(_metadata: TokenStream, input: TokenStream) -> TokenStream {
 
 /// Determine if the struct has a field named "bees".
 fn has_bees(struct_: &syn::ItemStruct) -> bool {
-    unimplemented!()
+    match struct_.fields {
+        // A field can only be named "bees" if it has a name, so we'll match
+        // those fields and ignore the rest.
+        Fields::Named(ref fields) => {
+            fields.named.iter()
+                .map(|field| {
+                    // Check that the field has a name. I'm not sure how it could
+                    // end up in `Fields::Named` if it didn't have a name, but what
+                    // do I know?
+                    if let Some(ident) = field.ident {
+                        // You can get the string representation of a `syn::Ident` by
+                        // using its `as_ref` or `to_string` methods.
+                        ident.as_ref() == "bees"
+                    } else {
+                        false
+                    }
+                }).any(|x| x)
+        }
+        // Ignore unit structs or anonymous fields.
+        _ => {
+            false
+        },
+    }
 }
 
 /// Generate fun compiler errors.
