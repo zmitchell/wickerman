@@ -34,7 +34,7 @@ struct Foo {
 }
 ```
 
-To see even more absurb error messages, add the `go-nuts` feature to `Cargo.toml`, and apply the attribute to a struct with several fields.
+To see even more absurd error messages, add the `go-nuts` feature to `Cargo.toml`, and apply the attribute to a struct with several fields.
 
 ```toml
 # Cargo.toml
