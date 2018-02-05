@@ -4,10 +4,12 @@ extern crate proc_macro;
 extern crate proc_macro2;
 #[macro_use]
 extern crate quote;
+extern crate rand;
 extern crate syn;
 
 use proc_macro::TokenStream;
-use syn::{Fields, Item};
+use rand::Rng;
+use syn::{Fields, Item, Type};
 use syn::spanned::Spanned;
 
 #[proc_macro_attribute]
@@ -96,8 +98,84 @@ fn light_it_up(struct_: &syn::ItemStruct) {
                         ident.span().unstable()
                             .error(bees_msg.clone())
                             .emit();
+                    } else {
+                        if cfg!(feature = "go-nuts") {
+                            // Show a random error message referencing the name of the field.
+                            ident.span().unstable()
+                                .error(random_error_message(ident.as_ref()))
+                                .emit();
+                            // Show a random error message referencing the type of the field.
+                            // Note that I'm only doing this for certain types out of pure,
+                            // unbridled laziness.
+                            match field.ty {
+                                Type::Path(ref typ) => {
+                                    typ.span().unstable()
+                                        .error(random_error_message(""))
+                                        .emit();
+                                },
+                                Type::Slice(ref typ) => {
+                                    typ.span().unstable()
+                                        .error(random_error_message(""))
+                                        .emit();
+                                },
+                                Type::Reference(ref typ) => {
+                                    typ.span().unstable()
+                                        .error(random_error_message(""))
+                                        .emit();
+                                },
+                                Type::Tuple(ref typ) => {
+                                    typ.span().unstable()
+                                        .error(random_error_message(""))
+                                        .emit();
+                                }
+                                _ => {}
+                            };
+                        }
                     }
                 }
             });
     }
+}
+
+/// Generate a random error message
+fn random_error_message(name: &str) -> String {
+    // Generate some quotes from The Wicker Man.
+    let truck_msg = String::from("🚚 SURPRISE 🚚");
+    let city_msg: String;
+    // If the error message is being generated for a type, rather than the name
+    // of a field, there will be no name available. In that case I'll just omit
+    // the name rather than digging through the syntax tree to find something
+    // that does have a name.
+    if name == "" {
+        city_msg = String::from("Is that some kind of city talk?");
+    } else {
+        city_msg = format!("{}? Is that some kind of city talk?", name.clone());
+    }
+    let bear_msg = [
+        "🐻".repeat(7).as_str(),
+        "🤜 RIGHT HOOK 🤛",
+        "🐻".repeat(7).as_str(),
+    ].join("\n");
+    let burned_msg = String::from("🔥 how'd it get burned? HOW'D IT GET BURNED?! 🔥");
+    let phallic_msg = String::from("🍆 PHALLIC SYMBOL 🍆 PHALLIC SYMBOL 🍆");
+    let shark_msg = String::from("🦈🦈🦈 Yeah, it was totally a shark in that bag 🦈🦈🦈");
+    let dr_bees_msg = String::from("🐝 This field is woefully underpopulated by BEES 🐝");
+    let bike_msg = String::from("🚴‍♀️ STEP AWAY FROM THE BIKE 🚴‍♀️");
+    let guilty_msg = String::from("You'll all be guilty! And you're doing it for nothing!");
+    // Store the messages in a `Vec<String>` so that a message may be chosen at random.
+    let messages = vec![
+        truck_msg,
+        city_msg,
+        bear_msg,
+        burned_msg,
+        phallic_msg,
+        shark_msg,
+        dr_bees_msg,
+        bike_msg,
+        guilty_msg,
+    ];
+    // Use the `rand` crate to generate an index in the proper range.
+    let index = rand::thread_rng().gen_range(0, messages.len());
+    // Return a copy of the error message.
+    messages[index].clone()
 }

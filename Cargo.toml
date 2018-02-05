@@ -7,7 +7,13 @@ license = "MIT/Apache-2.0"
 [dependencies]
 proc-macro2 = {version = "^0.2.2", features = ["nightly"]}
 quote = "^0.4.2"
+rand = "^0.4.2"
 syn = {version = "^0.12.12", features = ["full"]}
 
 [lib]
 proc-macro = true
+
+[features]
+default = ["just-the-bees-please"]
+go-nuts = []
+just-the-bees-please = []
