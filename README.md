@@ -10,6 +10,38 @@ This crate is meant to illustrate how to make a simple procedural macro in Rust.
 
 * [Introdution to Procedural Macros](https://tinkering.xyz/posts/introduction-to-proc-macros/)
 
+To see the error message above, add `wickerman` as a dependency in your `Cargo.toml`:
+```toml
+# Cargo.toml
+[dependencies]
+wickerman = {git = "https://github.com/zmitchell/wickerman"}
+```
+
+then use `wickerman::wickerman` in a crate with procedural macros enabled (`#![feature(proc_macro)]`):
+```rust
+#![feature(proc_macro)]
+
+extern crate wickerman;
+use wickerman::wickerman;
+```
+
+and, finally, apply the `#[wickerman]` attribute to a struct containing a field named "bees".
+
+```rust
+#[wickerman]
+struct Foo {
+    bees: i32,
+}
+```
+
+To see even more absurb error messages, add the `go-nuts` feature to `Cargo.toml`, and apply the attribute to a struct with several fields.
+
+```text
+# Cargo.toml
+[dependencies]
+wickerman = {git = "https://github.com/zmitchell/wickerman", features = ["go-nuts"]}
+```
+
 ## License
 
 Licensed under either of
