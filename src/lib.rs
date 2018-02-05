@@ -74,28 +74,27 @@ fn light_it_up(struct_: &syn::ItemStruct) {
         // newline characters at the beginning and end of the error message.
         let bees_msg = ["", bees.as_str(), msg, bees.as_str(), ""].join("\n");
         // Find the field named "bees".
-        fields.named.iter()
-            .for_each(|field| {
-                if let Some(ident) = field.ident {
-                    if ident.as_ref() == "bees" {
-                        // Deliver the error message.
+        for field in &fields.named {
+            if let Some(ident) = field.ident {
+                if ident.as_ref() == "bees" {
+                    // Deliver the error message.
+                    ident.span().unstable()
+                        .error(bees_msg.clone())
+                        .emit();
+                } else {
+                    if cfg!(feature = "go-nuts") {
+                        // Show a random error message referencing the name of the field.
                         ident.span().unstable()
-                            .error(bees_msg.clone())
+                            .error(random_error_message(ident.as_ref()))
                             .emit();
-                    } else {
-                        if cfg!(feature = "go-nuts") {
-                            // Show a random error message referencing the name of the field.
-                            ident.span().unstable()
-                                .error(random_error_message(ident.as_ref()))
-                                .emit();
-                            // Show a random error message referencing the type of the field.
-                            field.ty.span().unstable()
-                                .error(random_error_message(""))
-                                .emit();
-                        }
+                        // Show a random error message referencing the type of the field.
+                        field.ty.span().unstable()
+                            .error(random_error_message(""))
+                            .emit();
                     }
                 }
-            });
+            }
+        }
     }
 }
 
