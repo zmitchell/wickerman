@@ -36,7 +36,7 @@ struct Foo {
 
 To see even more absurb error messages, add the `go-nuts` feature to `Cargo.toml`, and apply the attribute to a struct with several fields.
 
-```text
+```toml
 # Cargo.toml
 [dependencies]
 wickerman = {git = "https://github.com/zmitchell/wickerman", features = ["go-nuts"]}
