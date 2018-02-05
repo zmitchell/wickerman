@@ -75,24 +75,21 @@ fn light_it_up(struct_: &syn::ItemStruct) {
         let bees_msg = ["", bees.as_str(), msg, bees.as_str(), ""].join("\n");
         // Find the field named "bees".
         for field in &fields.named {
-            if let Some(ident) = field.ident {
-                if ident.as_ref() == "bees" {
-                    // Deliver the error message.
-                    ident.span().unstable()
-                        .error(bees_msg.clone())
-                        .emit();
-                } else {
-                    if cfg!(feature = "go-nuts") {
-                        // Show a random error message referencing the name of the field.
-                        ident.span().unstable()
-                            .error(random_error_message(ident.as_ref()))
-                            .emit();
-                        // Show a random error message referencing the type of the field.
-                        field.ty.span().unstable()
-                            .error(random_error_message(""))
-                            .emit();
-                    }
-                }
+            let ident = field.ident.unwrap();
+            if ident == "bees" {
+                // Deliver the error message.
+                ident.span().unstable()
+                    .error(bees_msg.clone())
+                    .emit();
+            } else if cfg!(feature = "go-nuts") {
+                // Show a random error message referencing the name of the field.
+                ident.span().unstable()
+                    .error(random_error_message(ident.as_ref()))
+                    .emit();
+                // Show a random error message referencing the type of the field.
+                field.ty.span().unstable()
+                    .error(random_error_message(""))
+                    .emit();
             }
         }
     }
