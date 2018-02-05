@@ -17,7 +17,7 @@ To see the error message above, add `wickerman` as a dependency in your `Cargo.t
 wickerman = {git = "https://github.com/zmitchell/wickerman"}
 ```
 
-then use `wickerman::wickerman` in a crate with procedural macros enabled (`#![feature(proc_macro)]`):
+then use `wickerman::wickerman` in a crate with procedural macros enabled:
 ```rust
 #![feature(proc_macro)]
 
