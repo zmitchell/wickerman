@@ -1,0 +1,7 @@
+[package]
+name = "bees"
+version = "0.1.0"
+authors = ["Zach Mitchell <zmitchell@fastmail.com>"]
+
+[dependencies]
+wickerman = {path = "../../../wickerman"}
