@@ -9,7 +9,7 @@ extern crate syn;
 
 use proc_macro::TokenStream;
 use rand::Rng;
-use syn::{Fields, Item, Type};
+use syn::{Fields, Item};
 use syn::spanned::Spanned;
 
 #[proc_macro_attribute]
@@ -105,31 +105,9 @@ fn light_it_up(struct_: &syn::ItemStruct) {
                                 .error(random_error_message(ident.as_ref()))
                                 .emit();
                             // Show a random error message referencing the type of the field.
-                            // Note that I'm only doing this for certain types out of pure,
-                            // unbridled laziness.
-                            match field.ty {
-                                Type::Path(ref typ) => {
-                                    typ.span().unstable()
-                                        .error(random_error_message(""))
-                                        .emit();
-                                },
-                                Type::Slice(ref typ) => {
-                                    typ.span().unstable()
-                                        .error(random_error_message(""))
-                                        .emit();
-                                },
-                                Type::Reference(ref typ) => {
-                                    typ.span().unstable()
-                                        .error(random_error_message(""))
-                                        .emit();
-                                },
-                                Type::Tuple(ref typ) => {
-                                    typ.span().unstable()
-                                        .error(random_error_message(""))
-                                        .emit();
-                                }
-                                _ => {}
-                            };
+                            field.ty.span().unstable()
+                                .error(random_error_message(""))
+                                .emit();
                         }
                     }
                 }
