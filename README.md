@@ -2,6 +2,8 @@
 
 Display error messages inspired by The Wicker Man in your Rust code
 
+<img src="not-the-bees-editor.jpg" width="400">
+
 ## About
 
 This crate is meant to illustrate how to make a simple procedural macro in Rust. There is an accompanying blog post that explains what procedural macros are and how to make them:
