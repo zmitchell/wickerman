@@ -2,7 +2,9 @@
 
 Display error messages inspired by The Wicker Man in your Rust code
 
+<p align="center">
 <img src="not-the-bees-editor.jpg" width="400">
+</p>
 
 ## About
 
