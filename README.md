@@ -10,7 +10,7 @@ Display error messages inspired by The Wicker Man in your Rust code
 
 This crate is meant to illustrate how to make a simple procedural macro in Rust. There is an accompanying blog post that explains what procedural macros are and how to make them:
 
-* [Introdution to Procedural Macros](https://tinkering.xyz/posts/introduction-to-proc-macros/)
+* [Introdution to Procedural Macros](https://tinkering.xyz/introduction-to-proc-macros/)
 
 To see the error message above, add `wickerman` as a dependency in your `Cargo.toml`:
 ```toml
